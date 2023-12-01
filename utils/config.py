@@ -24,6 +24,9 @@ with open('data/jediswap/abi.json', 'r') as file:
     
 with open('data/10kswap/abi.json', 'r') as file:
     SWAP10K_ABI = json.load(file)
+    
+with open('data/unframed/abi.json', 'r') as file:
+    UNFRAMED_ABI = json.load(file)
 
 DMAIL_ADDRESS = 0x0454F0BD015E730E5ADBB4F080B075FDBF55654FF41EE336203AA2E1AC4D4309
 
