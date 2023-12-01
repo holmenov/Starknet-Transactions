@@ -11,7 +11,7 @@ class Dmail(Account):
     
     @check_gas
     async def send_mail(self):
-        logger.info(f'ID: {self.account_id} | {self.account_address} | Send mail via Dmail.')
+        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Send mail via Dmail.')
         
         contract = self.get_contract(DMAIL_ADDRESS, DMAIL_ABI)
         

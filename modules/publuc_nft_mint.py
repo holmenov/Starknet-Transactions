@@ -11,7 +11,7 @@ class PublicMint(Account):
 
     @check_gas
     async def mint_nft(self, contract_address: str):
-        logger.info(f'ID: {self.account_id} | {self.account_address} | Mint public NFT.')
+        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Mint public NFT.')
 
         contract = self.get_contract(contract_address, NFT_ABI)
 

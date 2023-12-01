@@ -12,7 +12,7 @@ class ZkLend(Account):
 
     @check_gas
     async def deposit(self, min_amount: float, max_amount: float, decimals: int, withdraw: bool):
-        logger.info(f'ID: {self.account_id} | {self.account_address} | Deposit ETH on ZkLend.')
+        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Deposit ETH on ZkLend.')
     
         amount_data = await self.get_amount('ETH', min_amount, max_amount, decimals)
         
@@ -33,7 +33,7 @@ class ZkLend(Account):
 
     @check_gas
     async def withdraw(self):
-        logger.info(f'ID: {self.account_id} | {self.account_address} | Withdraw ETH on ZkLend.')
+        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Withdraw ETH on ZkLend.')
 
         tx = await self.contract.functions['withdraw_all'].invoke(STARKNET_TOKENS['ETH'], auto_estimate=True)
 

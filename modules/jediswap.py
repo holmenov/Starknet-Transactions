@@ -37,7 +37,7 @@ class JediSwap(Account):
         max_percent: int,
         swap_reverse: bool
     ):
-        logger.info(f'ID: {self.account_id} | {self.account_address} | {from_token} -> {to_token} | Swap on JediSwap.')
+        logger.info(f'ID: {self.account_id} | {self.account_address_str} | {from_token} -> {to_token} | Swap on JediSwap.')
         
         if all_amount:
             amount_data = await self.get_amount_percents(from_token, min_percent, max_percent)

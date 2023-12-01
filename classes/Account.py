@@ -15,6 +15,7 @@ from utils.utils import sleep
 class Account:
     def __init__(self, account_id: int, private_key: str, account_address: str) -> None:
         self.private_key = int(private_key, 16)
+        self.account_address_str = account_address
         self.account_address = int(account_address, 16)
         
         self.account_id = account_id
@@ -47,11 +48,11 @@ class Account:
 
         if tx.status == TransactionFinalityStatus.ACCEPTED_ON_L2:
             logger.success(
-                f'ID: {self.account_id} | {self.account_address} | https://starkscan.co/tx/{hex(tx.hash)} successfully!')
+                f'ID: {self.account_id} | {self.account_address_str} | https://starkscan.co/tx/{hex(tx.hash)} successfully!')
 
         elif tx.status == TransactionFinalityStatus.NOT_RECEIVED:
             logger.error(
-                f'ID: {self.account_id} | {self.account_address} | https://starkscan.co/tx/{hex(tx.hash)} transaction failed!')
+                f'ID: {self.account_id} | {self.account_address_str} | https://starkscan.co/tx/{hex(tx.hash)} transaction failed!')
 
     async def check_allowance(self, token_address: int, spender: str):
         contract = self.get_contract(token_address, ERC20_ABI)
@@ -97,7 +98,7 @@ class Account:
         allowance_amount = await self.check_allowance(token_address, spender)
 
         if amount > allowance_amount or amount == 0:
-            logger.info(f'ID: {self.account_id} | {self.account_address} | Make approve.')
+            logger.info(f'ID: {self.account_id} | {self.account_address_str} | Make approve.')
 
             approve_amount = 2 ** 128 if amount > allowance_amount else 0
             tx = await contract.functions['approve'].invoke(spender, approve_amount, auto_estimate=True)
@@ -112,7 +113,7 @@ class Account:
         allowance_amount = await self.check_allowance(token_address, spender)
         
         if amount > allowance_amount or amount == 0:
-            logger.info(f'ID: {self.account_id} | {self.account_address} | Make approve.')
+            logger.info(f'ID: {self.account_id} | {self.account_address_str} | Make approve.')
 
             approve_amount = 2 ** 128 if amount > allowance_amount else 0
             tx_approve = contract.functions['approve'].prepare(spender, approve_amount)
@@ -127,4 +128,4 @@ class Account:
 
         await self.account.client.wait_for_tx(tx.transaction_hash)
         
-        logger.success(f'ID: {self.account_id} | {self.account_address} | https://starkscan.co/tx/{hex(tx.transaction_hash)} successfully!')
+        logger.success(f'ID: {self.account_id} | {self.account_address_str} | https://starkscan.co/tx/{hex(tx.transaction_hash)} successfully!')
