@@ -11,7 +11,7 @@ from modules.zklend import ZkLend
 async def random_launch(id, wallet, address):
     # Write in the list the name of functions you want to use in randomization
     modules = [
-        dmail_send, deposit_zklend, increase_allowance_unframed
+        dmail_send, increase_allowance_unframed, cancel_orders_unframed
     ]
 
     random_module = random.choice(modules)
@@ -33,7 +33,7 @@ async def mint_public_nft(id, wallet, address):
 async def deposit_zklend(id, wallet, address):
     min_amount = 0.0005
     max_amount = 0.0009
-    decimals = 5
+    decimals = 50
 
     withdraw = True
 
@@ -48,6 +48,11 @@ async def increase_allowance_unframed(id, wallet, address):
 
     unframed = Unframed(id, wallet, address)
     await unframed.increase_allowance(min_amount, max_amount, decimals)
+    
+
+async def cancel_orders_unframed(id, wallet, address):
+    unframed = Unframed(id, wallet, address)
+    await unframed.cancel_orders()
 
 
 async def swap_jediswap(id, wallet, address):

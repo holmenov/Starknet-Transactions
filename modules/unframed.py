@@ -1,7 +1,7 @@
 import random
 from loguru import logger
 from classes.Account import Account
-from utils.config import ERC20_ABI, STARKNET_TOKENS, UNFRAMED_ADDRESS
+from utils.config import ERC20_ABI, STARKNET_TOKENS, UNFRAMED_ABI, UNFRAMED_ADDRESS
 from utils.utils import check_gas
 
 
@@ -19,6 +19,23 @@ class Unframed(Account):
         
         tx = await eth_contract.functions['increaseAllowance'].invoke(
             UNFRAMED_ADDRESS, amount_data['amount_wei'], auto_estimate=True
+        )
+        
+        await self.wait_until_tx_accepted(tx)
+
+    @check_gas
+    async def cancel_orders(self):
+        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Cancel orders Unframed.')
+        
+        eth_contract = self.get_contract(UNFRAMED_ADDRESS, UNFRAMED_ABI, cairo_version=1)
+        
+        order = random.randint(
+            0,
+            3618502788666131213697322783095070105623107215331596699973092056135872020481
+        )
+        
+        tx = await eth_contract.functions['cancel_orders'].invoke(
+            [order], auto_estimate=True
         )
         
         await self.wait_until_tx_accepted(tx)

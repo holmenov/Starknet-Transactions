@@ -8,7 +8,7 @@ class ZkLend(Account):
     def __init__(self, account_id: int, private_key: str, account_address: str) -> None:
         super().__init__(account_id, private_key, account_address)
         
-        self.contract = self.get_contract(ZKLEND_ADDRESS, ZKLEND_ABI)
+        self.contract = self.get_contract(ZKLEND_ADDRESS, ZKLEND_ABI, cairo_version=1)
 
     @check_gas
     async def deposit(self, min_amount: float, max_amount: float, decimals: int, withdraw: bool):

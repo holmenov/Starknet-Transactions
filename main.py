@@ -20,8 +20,9 @@ def get_module():
             questionary.Choice('3) Mint public NFT', mint_public_nft),
             questionary.Choice('4) Deposit on ZkLend', deposit_zklend),
             questionary.Choice('5) Increase allowance for Unframed', increase_allowance_unframed),
-            questionary.Choice('6) Swap on JediSwap', swap_jediswap),
-            questionary.Choice('7) Swap on 10KSwap', swap_10k),
+            questionary.Choice('6) Cancel order on Unframed', cancel_orders_unframed),
+            questionary.Choice('7) Swap on JediSwap', swap_jediswap),
+            questionary.Choice('8) Swap on 10KSwap', swap_10k),
             questionary.Choice('X) Close', 'exit')
         ],
         qmark='📌 ',

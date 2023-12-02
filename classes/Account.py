@@ -29,16 +29,17 @@ class Account:
             chain=StarknetChainId.MAINNET
         )
 
-    def get_contract(self, contract_address: int, abi: list):
+    def get_contract(self, contract_address: int, abi: list, cairo_version: int = 0):
         contract = Contract(
             address=contract_address,
             abi=abi,
-            provider=self.account
+            provider=self.account,
+            cairo_version=cairo_version
         )
 
         return contract
 
-    async def get_contract_without_abi(self, contract_address: str):
+    async def get_contract_without_abi(self, contract_address: int):
         contract = await Contract.from_address(address=contract_address, provider=self.account)
 
         return contract
