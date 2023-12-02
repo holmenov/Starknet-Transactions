@@ -24,7 +24,7 @@ With this repository, you can do simple transactions on **StarkNet**. You can do
 1. Insert private keys into `wallets.txt`
 2. Insert wallet addresses in `addresses.txt`
 3. Set the settings in `settings.py` *(Check SETTIGNS section)*
-4. Set the settings for each module in `utils/all_modules.py` 
+4. Set the settings for each module in `modules_settings.py` 
 
 ## SETTINGS
 

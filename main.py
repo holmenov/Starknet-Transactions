@@ -1,64 +1,43 @@
-import random
-import sys
-import time
-from typing import Callable
 from loguru import logger
 import questionary
-from concurrent.futures import ThreadPoolExecutor
 
-from settings import DEBUG_MODE, QUANTITY_THREADS, RANDOM_WALLETS, THREAD_SLEEP_FROM, THREAD_SLEEP_TO
+from classes.Threads import Threads
+from settings import QUANTITY_THREADS
 from utils.all_modules import *
-from utils.utils import _async_run_module, get_wallets
+from utils.utils import get_wallets
 
 
 def get_module():
-    selected_module = questionary.select(
+    module = questionary.select(
         'Choose the module you want to start with:',
         choices=[
-            questionary.Choice('1) Random module', random_launch),
-            questionary.Choice('2) DMail', dmail_send),
-            questionary.Choice('3) Mint public NFT', mint_public_nft),
-            questionary.Choice('4) Deposit on ZkLend', deposit_zklend),
-            questionary.Choice('5) Increase allowance for Unframed', increase_allowance_unframed),
-            questionary.Choice('6) Cancel order on Unframed', cancel_orders_unframed),
-            questionary.Choice('7) Swap on JediSwap', swap_jediswap),
-            questionary.Choice('8) Swap on 10KSwap', swap_10k),
-            questionary.Choice('X) Close', 'exit')
+            questionary.Choice('1) Random modules', random_modules),
+            questionary.Choice('2) Random low-cost modules', random_low_cost_modules),
+            questionary.Choice('3) DMail', dmail_send),
+            questionary.Choice('4) Mint public NFT', mint_public_nft),
+            questionary.Choice('5) Deposit ZkLend', deposit_zklend),
+            questionary.Choice('6) Withdraw ZkLend', withdraw_zklend),
+            questionary.Choice('7) Increase allowance for Unframed', increase_allowance_unframed),
+            questionary.Choice('8) Cancel order on Unframed', cancel_orders_unframed),
+            questionary.Choice('9) Swap on JediSwap', swap_jediswap),
+            questionary.Choice('10) Swap on 10KSwap', swap_10k),
+            questionary.Choice('11) Transfer ETH on random address', eth_transfer),
         ],
         qmark='📌 ',
         pointer='✅ '
     ).ask()
 
-    if selected_module == 'exit':
-        sys.exit()
-    return selected_module
+    return module
 
 
-def main(module: Callable):
+def main():
+    module = get_module()
     data = get_wallets()
-
-    if RANDOM_WALLETS:
-        random.shuffle(data)
-
-    with ThreadPoolExecutor(max_workers=QUANTITY_THREADS) as executor:
-        for _, account in enumerate(data, start=1):
-            future = executor.submit(
-                _async_run_module,
-                module,
-                account.get('id'),
-                account.get('wallet'),
-                account.get('address')
-            )
-
-            if DEBUG_MODE:
-                exception = future.exception()
-                exception_msg = (f'{account.get("id")} | {account.get("address")} | {exception}')
-                logger.error(exception_msg) if exception else time.sleep(random.randint(THREAD_SLEEP_FROM, THREAD_SLEEP_TO))
-            else:
-                time.sleep(random.randint(THREAD_SLEEP_FROM, THREAD_SLEEP_TO))
-
+    
+    threads = Threads(data)
+    threads.start_workers(module=module, max_workers=QUANTITY_THREADS)
+    
 
 if __name__ == '__main__':
-    logger.add('logging.log')
-    module = get_module()
-    main(module)
+    logger.add('logs.log')
+    main()
