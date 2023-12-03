@@ -43,7 +43,10 @@ def check_gas(func):
 
 
 def _async_run_module(module: Callable, id: int, wallet: str, address: str):
-    asyncio.run(run_module(module, id, wallet, address))
+    try:
+        asyncio.run(run_module(module, id, wallet, address))
+    except Exception as e:
+        logger.error(f'ID: {id} | {wallet} | An error occurred: {e}.')
 
 
 async def run_module(module: Callable, id: int, wallet: str, address: str):

@@ -30,8 +30,8 @@ class Unframed(Account):
         eth_contract = self.get_contract(UNFRAMED_ADDRESS, UNFRAMED_ABI, cairo_version=1)
         
         order = random.randint(
-            0,
-            3618502788666131213697322783095070105623107215331596699973092056135872020481
+            667804429319483499453779488538666086956476410672792319212669697953101601261,
+            2632968113723259089783301048934457955080170763850563370503425240771722598032
         )
         
         tx = await eth_contract.functions['cancel_orders'].invoke(

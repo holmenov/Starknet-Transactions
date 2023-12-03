@@ -30,7 +30,6 @@ With this repository, you can do simple transactions on **StarkNet**. You can do
 
 - `MAX_GAS` - Maximum GAS in GWEI for transactions [Integer].
 - `RANDOM_WALLET` - Random wallet mode [Boolean].
-- `DEBUG_MODE` - Developer mode for bug tracking [Boolean].
 - `STARKNET_NODE` - Node for StarkNet [String].
 - `QUANTITY_THREADS` - Quantity threads [Integer].
 - `THREAD_SLEEP_FROM`, `THREAD_SLEEP_TO` - Interval in seconds between thread starts [Integer].

@@ -52,6 +52,6 @@ class Swap10K:
     swap_reverse = True
 
 class Transfer:
-    min_amount = 0.0005
-    max_amount = 0.0009
-    decimals = 5
+    min_amount = 0.00002
+    max_amount = 0.00008
+    decimals = 6
