@@ -5,7 +5,7 @@ import time
 from typing import Callable
 from loguru import logger
 
-from settings import DEBUG_MODE, RANDOM_WALLETS, THREAD_SLEEP_FROM, THREAD_SLEEP_TO
+from settings import RANDOM_WALLETS, WORKER_SLEEP_FROM, WORKER_SLEEP_TO, MAX_WORKERS
 from utils.utils import _async_run_module
 
 
@@ -16,10 +16,10 @@ class Threads:
         if RANDOM_WALLETS:
             random.shuffle(self.data)
     
-    def start_workers(self, module: Callable, max_workers: int):
+    def start_workers(self, module: Callable, max_workers: int = MAX_WORKERS):
         with ThreadPoolExecutor(max_workers=max_workers) as executor:
             for account in self.data:
                 executor.submit(
                     _async_run_module, module, account.get('id'), account.get('wallet'), account.get('address')
                 )
-                time.sleep(random.randint(THREAD_SLEEP_FROM, THREAD_SLEEP_TO))
+                time.sleep(random.randint(WORKER_SLEEP_FROM, WORKER_SLEEP_TO))

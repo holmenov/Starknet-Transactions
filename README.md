@@ -8,8 +8,10 @@ With this repository, you can do simple transactions on **StarkNet**. You can do
 - Mint public NFT
 - Deposit and withdraw on ZkLend
 - Increase allowance for Unframed
+- Cancel orders on Unframed
 - Swap on JediSwap
 - Swap on 10KSwap
+- Transfer ETH to random address
 - Random select any modules
 
 ## INSTALLATION
@@ -30,8 +32,9 @@ With this repository, you can do simple transactions on **StarkNet**. You can do
 
 - `MAX_GAS` - Maximum GAS in GWEI for transactions [Integer].
 - `RANDOM_WALLET` - Random wallet mode [Boolean].
+- `REMOVE_WALLET` - Remove wallet after work [Boolean].
 - `STARKNET_NODE` - Node for StarkNet [String].
-- `QUANTITY_THREADS` - Quantity threads [Integer].
-- `THREAD_SLEEP_FROM`, `THREAD_SLEEP_TO` - Interval in seconds between thread starts [Integer].
+- `MAX_WORKERS` - Quantity threads [Integer].
+- `WORKER_SLEEP_FROM`, `WORKER_SLEEP_TO` - Interval in seconds between thread starts [Integer].
 - `SLEEP_AFTER_WORK_FROM`, `SLEEP_AFTER_WORK_TO` - Seconds to sleep after completing a task [Integer].
 - `SLIPPAGE` - Percentage that is lost on exchange [Integer].

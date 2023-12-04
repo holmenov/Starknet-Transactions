@@ -7,7 +7,7 @@ from loguru import logger
 from web3 import Web3
 import asyncio
 
-from settings import MAX_GAS, SLEEP_AFTER_WORK_FROM, SLEEP_AFTER_WORK_TO
+from settings import MAX_GAS, SLEEP_AFTER_WORK_FROM, SLEEP_AFTER_WORK_TO, REMOVE_WALLET
 from utils.config import ADDRESSES, WALLETS
 
 
@@ -20,8 +20,7 @@ def get_wallets():
         logger.error('It seems you forgot to enter the wallets')
         sys.exit()
 
-    data = [{'id': id, 'wallet': wallet, 'address': address}
-            for id, (wallet, address) in enumerate(zip(WALLETS, ADDRESSES), start=1)]
+    data = [{'id': id, 'wallet': wallet, 'address': address} for id, (wallet, address) in enumerate(zip(WALLETS, ADDRESSES), start=1)]
 
     return data
 
@@ -47,6 +46,9 @@ def _async_run_module(module: Callable, id: int, wallet: str, address: str):
         asyncio.run(run_module(module, id, wallet, address))
     except Exception as e:
         logger.error(f'ID: {id} | {wallet} | An error occurred: {e}.')
+    
+    if REMOVE_WALLET:
+        remove_wallet_from_files(wallet, address)
 
 
 async def run_module(module: Callable, id: int, wallet: str, address: str):
@@ -67,3 +69,18 @@ def get_random_string() -> str:
     length = random.randint(2, 4)
     random_str = ''.join(random.choice(letters) for _ in range(length))
     return random_str
+
+
+def remove_wallet_from_files(wallet_to_remove: str, address_to_remove: str):
+    with open('wallets.txt', 'r', encoding='utf-8') as wallets_file:
+        wallets = wallets_file.readlines()
+    with open('addresses.txt', 'r', encoding='utf-8') as addresses_file:
+        addresses = addresses_file.readlines()
+    
+    cleared_wallets = [wallet for wallet in wallets if wallet.strip() != wallet_to_remove]
+    cleared_addresses = [address for address in addresses if address.strip() != address_to_remove]
+    
+    with open('wallets.txt', 'w', encoding='utf-8') as wallets_file:
+        wallets_file.writelines(cleared_wallets)
+    with open('addresses.txt', 'w', encoding='utf-8') as addresses_file:
+        addresses_file.writelines(cleared_addresses)
