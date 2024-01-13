@@ -1,8 +1,9 @@
 import random
-from loguru import logger
-from classes.Account import Account
+
+from modules.account import Account
 from utils.config import ERC20_ABI, STARKNET_TOKENS, UNFRAMED_ABI, UNFRAMED_ADDRESS
-from utils.utils import check_gas
+from utils.wrappers import check_gas
+from utils.utils import send_logs
 
 
 class Unframed(Account):
@@ -11,7 +12,7 @@ class Unframed(Account):
 
     @check_gas
     async def increase_allowance(self, min_amount: float, max_amount: float, decimals: int):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Increase allowance for Unframed.')
+        send_logs('Increase allowance for Unframed.', self.account_id, self.account_address_str)
         
         eth_contract = self.get_contract(STARKNET_TOKENS['ETH'], ERC20_ABI)
         
@@ -25,7 +26,7 @@ class Unframed(Account):
 
     @check_gas
     async def cancel_orders(self):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Cancel orders Unframed.')
+        send_logs('Cancel orders Unframed.', self.account_id, self.account_address_str)
         
         eth_contract = self.get_contract(UNFRAMED_ADDRESS, UNFRAMED_ABI, cairo_version=1)
         

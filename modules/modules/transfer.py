@@ -1,9 +1,9 @@
 import random
-import secrets
-from loguru import logger
-from classes.Account import Account
+
+from modules.account import Account
 from utils.config import ERC20_ABI, STARKNET_TOKENS
-from utils.utils import check_gas
+from utils.wrappers import check_gas
+from utils.utils import send_logs
 
 
 class Transfer(Account):
@@ -17,7 +17,7 @@ class Transfer(Account):
 
     @check_gas
     async def transfer(self, min_amount: float, max_amount: float, decimals: int):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Transfer ETH.')
+        send_logs('Transfer ETH.', self.account_id, self.account_address_str)
         
         eth_contract = self.get_contract(STARKNET_TOKENS['ETH'], ERC20_ABI)
         

@@ -1,5 +1,4 @@
 import random
-from loguru import logger
 from starknet_py.net.full_node_client import FullNodeClient
 from starknet_py.net.account.account import Account as StarkAccount
 from starknet_py.net.signer.stark_curve_signer import KeyPair
@@ -7,9 +6,9 @@ from starknet_py.net.models.chains import StarknetChainId
 from starknet_py.contract import InvokeResult, Contract, PreparedFunctionCall
 from starknet_py.net.client_models import TransactionFinalityStatus
 
-from settings import STARKNET_NODE
+from settings import MainSettings as SETTINGS
 from utils.config import ERC20_ABI, STARKNET_TOKENS
-from utils.utils import sleep
+from utils.utils import async_sleep, send_logs
 
 
 class Account:
@@ -20,7 +19,7 @@ class Account:
         
         self.account_id = account_id
 
-        self.client = FullNodeClient(node_url=STARKNET_NODE)
+        self.client = FullNodeClient(node_url=SETTINGS.STARKNET_NODE)
 
         self.account = StarkAccount(
             address=self.account_address,
@@ -48,12 +47,16 @@ class Account:
         tx = await tx.wait_for_acceptance()
 
         if tx.status == TransactionFinalityStatus.ACCEPTED_ON_L2:
-            logger.success(
-                f'ID: {self.account_id} | {self.account_address_str} | https://starkscan.co/tx/{hex(tx.hash)} successfully!')
+            send_logs(
+                f'https://starkscan.co/tx/{hex(tx.hash)} successfully!',
+                self.account_id, self.account_address_str, status='success'
+            )
 
         elif tx.status == TransactionFinalityStatus.NOT_RECEIVED:
-            logger.error(
-                f'ID: {self.account_id} | {self.account_address_str} | https://starkscan.co/tx/{hex(tx.hash)} transaction failed!')
+            send_logs(
+                f'https://starkscan.co/tx/{hex(tx.hash)} transaction failed!',
+                self.account_id, self.account_address_str, status='error'
+            )
 
     async def check_allowance(self, token_address: int, spender: str):
         contract = self.get_contract(token_address, ERC20_ABI)
@@ -99,14 +102,14 @@ class Account:
         allowance_amount = await self.check_allowance(token_address, spender)
 
         if amount > allowance_amount or amount == 0:
-            logger.info(f'ID: {self.account_id} | {self.account_address_str} | Make approve.')
+            send_logs('Make approve.', self.account_id, self.account_address_str)
 
             approve_amount = 2 ** 128 if amount > allowance_amount else 0
             tx = await contract.functions['approve'].invoke(spender, approve_amount, auto_estimate=True)
 
             await self.wait_until_tx_accepted(tx)
 
-            await sleep(5, 10)
+            await async_sleep(5, 10, logs=False)
     
     async def approve_multicall(self, token_address: int, spender: int, amount: int) -> PreparedFunctionCall | None:
         contract = self.get_contract(token_address, ERC20_ABI)
@@ -114,7 +117,7 @@ class Account:
         allowance_amount = await self.check_allowance(token_address, spender)
         
         if amount > allowance_amount or amount == 0:
-            logger.info(f'ID: {self.account_id} | {self.account_address_str} | Make approve.')
+            send_logs('Make approve.', self.account_id, self.account_address_str)
 
             approve_amount = 2 ** 128 if amount > allowance_amount else 0
             tx_approve = contract.functions['approve'].prepare(spender, approve_amount)
@@ -129,4 +132,7 @@ class Account:
 
         await self.account.client.wait_for_tx(tx.transaction_hash)
         
-        logger.success(f'ID: {self.account_id} | {self.account_address_str} | https://starkscan.co/tx/{hex(tx.transaction_hash)} successfully!')
+        send_logs(
+            f'https://starkscan.co/tx/{hex(tx.transaction_hash)} successfully!',
+            self.account_id, self.account_address_str, status='success'
+        )

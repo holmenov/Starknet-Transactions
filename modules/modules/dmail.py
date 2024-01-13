@@ -1,8 +1,7 @@
-from loguru import logger
-
-from classes.Account import Account
+from modules.account import Account
 from utils.config import DMAIL_ABI, DMAIL_ADDRESS
-from utils.utils import check_gas, get_random_string
+from utils.utils import get_random_string, send_logs
+from utils.wrappers import check_gas
 
 
 class Dmail(Account):
@@ -11,7 +10,7 @@ class Dmail(Account):
     
     @check_gas
     async def send_mail(self):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Send mail via Dmail.')
+        send_logs('Send mail via Dmail', self.account_id, self.account_address_str)
         
         contract = self.get_contract(DMAIL_ADDRESS, DMAIL_ABI)
         

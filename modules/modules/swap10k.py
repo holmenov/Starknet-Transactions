@@ -1,10 +1,10 @@
 import time
-from loguru import logger
 
-from classes.Account import Account
-from settings import SLIPPAGE
+from modules.account import Account
+from settings import MainSettings as SETTINGS
 from utils.config import SWAP10K_ABI, SWAP10K_ADDRESS, STARKNET_TOKENS
-from utils.utils import check_gas
+from utils.wrappers import check_gas
+from utils.utils import send_logs
 
 
 class Swap10K(Account):
@@ -20,7 +20,7 @@ class Swap10K(Account):
         
         amount_out = response_data.amounts[1]
         
-        amount_out = int(amount_out - (amount_out * SLIPPAGE // 100))
+        amount_out = int(amount_out - (amount_out * SETTINGS.SLIPPAGE // 100))
         
         return amount_out
 
@@ -36,8 +36,8 @@ class Swap10K(Account):
         min_percent: int,
         max_percent: int,
         swap_reverse: bool
-    ):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | {from_token} -> {to_token} | Swap on 10KSwap.')
+    ):  
+        send_logs(f'{from_token} -> {to_token} | Swap on 10KSwap.', self.account_id, self.account_address_str)
         
         if all_amount:
             amount_data = await self.get_amount_percents(from_token, min_percent, max_percent)

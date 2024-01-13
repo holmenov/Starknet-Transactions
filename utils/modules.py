@@ -1,13 +1,13 @@
 import random
-from modules.transfer import Transfer
 
-import modules_settings as ms
-from modules.dmail import Dmail
-from modules.jediswap import JediSwap
-from modules.publuc_nft_mint import PublicMint
-from modules.swap10k import Swap10K
-from modules.unframed import Unframed
-from modules.zklend import ZkLend
+from settings import ModulesSettings as ms
+from modules.modules.transfer import Transfer
+from modules.modules.dmail import Dmail
+from modules.modules.jediswap import JediSwap
+from modules.modules.publuc_nft_mint import PublicMint
+from modules.modules.swap10k import Swap10K
+from modules.modules.unframed import Unframed
+from modules.modules.zklend import ZkLend
 
 
 async def random_low_cost_modules(id, wallet, address):

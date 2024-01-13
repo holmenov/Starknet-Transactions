@@ -1,8 +1,9 @@
+import asyncio
 from loguru import logger
 import questionary
 
-from classes.Threads import Threads
-from utils.all_modules import *
+from utils.modules import *
+from utils.launch import start_tasks
 from utils.utils import get_wallets
 
 
@@ -35,9 +36,7 @@ def main():
     module = get_module()
     data = get_wallets()
     
-    threads = Threads(data)
-    threads.start_workers(module=module)
-    
+    asyncio.run(start_tasks(module, data))
 
 if __name__ == '__main__':
     logger.add('logs.log')

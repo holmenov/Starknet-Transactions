@@ -1,8 +1,7 @@
-from loguru import logger
-
-from classes.Account import Account
+from modules.account import Account
 from utils.config import NFT_ABI
-from utils.utils import check_gas
+from utils.wrappers import check_gas
+from utils.utils import send_logs
 
 
 class PublicMint(Account):
@@ -11,7 +10,7 @@ class PublicMint(Account):
 
     @check_gas
     async def mint_nft(self, contract_address: str):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Mint public NFT.')
+        send_logs('Mint public NFT.', self.account_id, self.account_address_str)
 
         contract = self.get_contract(contract_address, NFT_ABI)
 

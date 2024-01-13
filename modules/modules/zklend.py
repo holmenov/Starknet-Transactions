@@ -1,7 +1,7 @@
-from loguru import logger
-from classes.Account import Account
+from modules.account import Account
 from utils.config import STARKNET_TOKENS, ZKLEND_ABI, ZKLEND_ADDRESS
-from utils.utils import check_gas, sleep
+from utils.wrappers import check_gas
+from utils.utils import async_sleep, send_logs
 
 
 class ZkLend(Account):
@@ -12,7 +12,7 @@ class ZkLend(Account):
 
     @check_gas
     async def deposit(self, min_amount: float, max_amount: float, decimals: int, withdraw: bool):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Deposit ETH on ZkLend.')
+        send_logs('Deposit ETH on ZkLend.', self.account_id, self.account_address_str)
     
         amount_data = await self.get_amount('ETH', min_amount, max_amount, decimals)
         
@@ -28,12 +28,12 @@ class ZkLend(Account):
         await self.execute_multicall_tx(calls=calls)
 
         if withdraw:
-            await sleep(5, 20)
+            await async_sleep(5, 20, logs=False)
             await self.withdraw()
 
     @check_gas
     async def withdraw(self):
-        logger.info(f'ID: {self.account_id} | {self.account_address_str} | Withdraw ETH on ZkLend.')
+        send_logs('Withdraw ETH on ZkLend.', self.account_id, self.account_address_str)
 
         tx = await self.contract.functions['withdraw_all'].invoke(STARKNET_TOKENS['ETH'], auto_estimate=True)
 
