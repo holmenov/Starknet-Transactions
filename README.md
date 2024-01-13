@@ -23,10 +23,9 @@ With this repository, you can do simple transactions on **StarkNet**. You can do
 
 ## SETUP
 
-1. Insert private keys into `wallets.txt`
-2. Insert wallet addresses in `addresses.txt`
-3. Set the settings in `settings.py` *(Check SETTIGNS section)*
-4. Set the settings for each module in `modules_settings.py` 
+1. Insert private keys into `wallets.txt`.
+2. Insert wallet addresses in `addresses.txt`.
+3. Set the settings in `settings.py`.
 
 ## SETTINGS
 
@@ -34,7 +33,20 @@ With this repository, you can do simple transactions on **StarkNet**. You can do
 - `RANDOM_WALLET` - Random wallet mode [Boolean].
 - `REMOVE_WALLET` - Remove wallet after work [Boolean].
 - `STARKNET_NODE` - Node for StarkNet [String].
-- `MAX_WORKERS` - Quantity threads [Integer].
-- `WORKER_SLEEP_FROM`, `WORKER_SLEEP_TO` - Interval in seconds between thread starts [Integer].
+- `START_PERIOD_FROM`, `START_PERIOD_TO` - Period in seconds to run all wallets [Integer].
+- `REPEATS_PER_WALLET` - Module repetitions for each wallet [Integer].
 - `SLEEP_AFTER_WORK_FROM`, `SLEEP_AFTER_WORK_TO` - Seconds to sleep after completing a task [Integer].
 - `SLIPPAGE` - Percentage that is lost on exchange [Integer].
+
+## MODULES SETTINGS
+
+You can set different settings for each module.
+
+- `nft_contract` - NFT Contract Address (for public mint NFT).
+- `min_amount`, max_amount - Minimum and maximum amount for transactions.
+- `decimals` - Number of digits for rounding after the decimal point.
+- `all_amount` - Use a percentage of the balance for the transaction.
+- `min_percent`, max_percent - Minimum and maximum percentage of the balance for the transaction.
+- `swap_reverse` - Reverse swap with the same parameters.
+
+There are also other settings that are individual to each module.
