@@ -108,9 +108,17 @@ async def swap_10k(id, wallet, address):
 
 
 async def eth_transfer(id, wallet, address):
-    min_amount = ms.Transfer.min_amount
-    max_amount = ms.Transfer.max_amount
-    decimals = ms.Transfer.decimals
+    min_amount = ms.Transfer.RandomTransfer.min_amount
+    max_amount = ms.Transfer.RandomTransfer.max_amount
+    decimals = ms.Transfer.RandomTransfer.decimals
     
     eth_transfer = Transfer(id, wallet, address)
     await eth_transfer.transfer(min_amount, max_amount, decimals)
+
+
+async def eth_transfer_cex(id, wallet, address):
+    min_percent = ms.Transfer.TransferCEX.min_percent
+    max_percent = ms.Transfer.TransferCEX.max_percent
+    
+    eth_transfer_cex = Transfer(id, wallet, address)
+    await eth_transfer_cex.transfer_eth_to_cex(min_percent, max_percent)

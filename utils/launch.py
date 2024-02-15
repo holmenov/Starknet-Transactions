@@ -17,20 +17,20 @@ async def start_tasks(module: Callable, data: list):
     await asyncio.gather(*tasks)
 
 
-async def _run_module(module: Callable, account_id: int, key: str, proxy: str):
+async def _run_module(module: Callable, account_id: int, key: str, address: str):
     await async_sleep(
         SETTINGS.START_PERIOD_FROM, SETTINGS.START_PERIOD_TO,
-        True, account_id, key, 'before starting work'
+        True, account_id, address, 'before starting work'
     )
 
-    await run_module(module, account_id, key, proxy)
+    await run_module(module, account_id, key, address)
 
     if SETTINGS.REMOVE_WALLET:
-        remove_wallet_from_files(key, proxy)
+        remove_wallet_from_files(key, address)
 
 
 @repeats
-async def run_module(module: Callable, account_id: int, key: str, proxy: str):
-    succcess_bridge = await module(account_id, key, proxy)
+async def run_module(module: Callable, account_id: int, key: str, address: str):
+    succcess_bridge = await module(account_id, key, address)
     if not succcess_bridge: return False
     return True

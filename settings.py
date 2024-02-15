@@ -91,6 +91,10 @@ class ModulesSettings:
         swap_reverse = True
 
     class Transfer:
-        min_amount = 0.00002
-        max_amount = 0.00008
-        decimals = 6
+        class RandomTransfer:
+            min_amount = 0.00002
+            max_amount = 0.00008
+            decimals = 6
+        class TransferCEX:
+            min_percent = 99
+            max_percent = 100

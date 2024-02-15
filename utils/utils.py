@@ -7,6 +7,11 @@ import asyncio
 from utils.config import ADDRESSES, WALLETS
 
 
+def read_file_to_list(filepath):
+    with open(filepath, 'r') as file:
+        return file.readlines()
+
+
 def send_logs(msg: str, account_id: int, address: str, status: str = 'info'):
     if status == 'info':
         logger.info(f'Account №{account_id} | {address} | {msg}')

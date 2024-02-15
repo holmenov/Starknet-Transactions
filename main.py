@@ -19,7 +19,8 @@ def get_module():
         questionary.Choice('8) Cancel order on Unframed', cancel_orders_unframed),
         questionary.Choice('9) Swap on JediSwap', swap_jediswap),
         questionary.Choice('10) Swap on 10KSwap', swap_10k),
-        questionary.Choice('11) Transfer ETH on random address', eth_transfer)
+        questionary.Choice('11) Transfer ETH on random address', eth_transfer),
+        questionary.Choice('12) Transfer ETH to CEX', eth_transfer_cex)
     ]
     
     module = questionary.select(
