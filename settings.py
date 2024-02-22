@@ -96,5 +96,5 @@ class ModulesSettings:
             max_amount = 0.00008
             decimals = 6
         class TransferCEX:
-            min_percent = 99
+            min_percent = 100
             max_percent = 100

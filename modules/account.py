@@ -27,6 +27,14 @@ class Account:
             key_pair=KeyPair.from_private_key(key=self.private_key),
             chain=StarknetChainId.MAINNET
         )
+    
+    @staticmethod
+    def wei_to_eth(amount_wei: int, decimals: int = 18) -> float:
+        return amount_wei / (10 ** decimals)
+    
+    @staticmethod
+    def eth_to_wei(amount_eth: float, decimals: int = 18) -> int:
+        return amount_eth * (10 ** decimals)
 
     def get_contract(self, contract_address: int, abi: list, cairo_version: int = 0):
         contract = Contract(
